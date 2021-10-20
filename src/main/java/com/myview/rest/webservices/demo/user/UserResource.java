@@ -21,8 +21,21 @@ public class UserResource {
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable int id){
-        return userDaoService.findOne(id);
+        User user = userDaoService.findOne(id);
+        if(user==null){
+            throw new UserNotFoundException("Id:-" + id);
+        }
+        return user;
     }
+
+    @DeleteMapping ("/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = userDaoService.deleteById(id);
+        if(user==null){
+            throw new UserNotFoundException("Id:-" + id);
+        }
+    }
+
     @PostMapping("/users")
     public ResponseEntity<Object> saveUser(@RequestBody User user){
         User savedUser = userDaoService.save(user);
